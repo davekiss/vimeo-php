@@ -36,7 +36,7 @@ class Vimeo
      * @param [type] $client_secret [description]
      * @param [type] $access_token  [description]
      */
-    public function __construct($client_id, $client_secret, $access_token = null)
+    public function __construct($client_id, $client_secret = null, $access_token = null)
     {
         $this->_client_id = $client_id;
         $this->_client_secret = $client_secret;
