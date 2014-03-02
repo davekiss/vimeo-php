@@ -50,7 +50,7 @@ class Vimeo
      * @param  string $method [description]
      * @return [type]         [description]
      */
-    public function request($url, $params = array(), $method = 'GET')
+    public function request($url, $params = array(), $method = 'GET', $last_modified = NULL)
     {
         // add accept header hardcoded to version 3.0
         $headers[] = 'Accept: ' . self::VERSION_STRING;
@@ -62,7 +62,12 @@ class Vimeo
             $headers[] = 'Authorization: Basic ' . base64_encode($this->_client_id . ':' . $this->_client_secret);
         } else if (!empty($this->_client_id) && empty($this->_client_secret)) {
 	       $params['client_id'] = $this->_client_id;
-    	}
+        }
+
+        // Add Modified header if provided
+        if ($last_modified !== NULL) {
+          $headers[] =  'If-Modified-Since: ' . $last_modified;
+        }
 
         //  Set the methods, determine the URL that we should actually request and prep the body.
         $curl_opts = array();
