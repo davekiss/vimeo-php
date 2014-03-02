@@ -124,6 +124,11 @@ class Vimeo
         curl_setopt_array($curl, $curl_opts);
         $response = curl_exec($curl);
         $curl_info = curl_getinfo($curl);
+
+        if ( curl_errno($curl) ) {
+          throw new Exception('CURL Error:' . curl_error($curl) );
+        }
+
         curl_close($curl);
 
         //  Retrieve the info
