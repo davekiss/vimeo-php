@@ -26,9 +26,10 @@ class Vimeo
     const ACCESS_TOKEN_ENDPOINT = '/oauth/access_token';
     const VERSION_STRING = 'application/vnd.vimeo.*+json; version=3.0';
 
-    private $_client_id = null;
+    private $_client_id     = null;
     private $_client_secret = null;
-    private $_access_token = null;
+    private $_access_token  = null;
+    private $_user_agent    = null;
 
     /**
      * [__construct description]
@@ -36,11 +37,12 @@ class Vimeo
      * @param [type] $client_secret [description]
      * @param [type] $access_token  [description]
      */
-    public function __construct($client_id, $client_secret = null, $access_token = null)
+    public function __construct($client_id, $client_secret = null, $access_token = null, $user_agent = null)
     {
-        $this->_client_id = $client_id;
+        $this->_client_id     = $client_id;
         $this->_client_secret = $client_secret;
-        $this->_access_token = $access_token;
+        $this->_access_token  = $access_token;
+        $this->_user_agent    = $user_agent;
     }
 
     /**
@@ -90,6 +92,11 @@ class Vimeo
 
         //  Set the headers
         $curl_opts[CURLOPT_HTTPHEADER] = $headers;
+
+        // Add user agent, if exists
+        if ($this->_user_agent !== NULL) {
+            $curl_opts[CURLOPT_USERAGENT] = $this->_user_agent;
+        }
 
         $response = $this->_request($curl_url, $curl_opts);
 
@@ -160,6 +167,10 @@ class Vimeo
     public function setToken($access_token)
     {
         $this->_access_token = $token;
+    }
+
+    public function set_user_agent($user_agent) {
+        $this->_user_agent = $user_agent;
     }
 
     /**
