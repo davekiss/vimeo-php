@@ -146,6 +146,10 @@ class Vimeo
 
         curl_close($curl);
 
+        if (false !== stripos($response, "HTTP/1.0 200 Connection established\r\n\r\n")) {
+          $response = str_ireplace("HTTP/1.0 200 Connection established\r\n\r\n", '', $response);
+        }
+
         //  Retrieve the info
         $header_size = $curl_info['header_size'];
         $headers = substr($response, 0, $header_size);
